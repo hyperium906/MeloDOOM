@@ -24,6 +24,7 @@ struct ContentView: View {
     @State private var geminiMoodText = "Generate a Gemini update to see Drake react to today’s scores."
     @State private var wallpaperPhase = false
     @State private var homeNotificationPending = false
+    @State private var spinnerRotation = 0.0
     @State private var foodSpend = 45.0
     @State private var clothesSpend = 0.0
     @State private var extracurricularSpend = 25.0
@@ -123,6 +124,7 @@ struct ContentView: View {
                 healthBarsCard
                 characterCard
                 moodDialogueCard
+                fidgetSpinnerCard
                 geminiReactionCard
                 notionLogCard
                 overallScoreCard
@@ -269,6 +271,54 @@ struct ContentView: View {
             healthBar(title: "Finance", value: financeScore, tint: .orange)
             healthBar(title: "Carbon", value: carbonScore, tint: .green)
             healthBar(title: "Digital", value: digitalScore, tint: .blue)
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(cardFill, in: RoundedRectangle(cornerRadius: 28, style: .continuous))
+    }
+
+    private var fidgetSpinnerCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Fidget Spinner")
+                .font(.title3.bold())
+
+            HStack {
+                Spacer()
+                ZStack {
+                    Circle()
+                        .fill(Color.white.opacity(0.08))
+                        .frame(width: 118, height: 118)
+
+                    Circle()
+                        .fill(Color.cyan.opacity(0.75))
+                        .frame(width: 34, height: 34)
+                        .offset(y: -40)
+
+                    Circle()
+                        .fill(Color.pink.opacity(0.75))
+                        .frame(width: 34, height: 34)
+                        .offset(x: -34, y: 22)
+
+                    Circle()
+                        .fill(Color.orange.opacity(0.75))
+                        .frame(width: 34, height: 34)
+                        .offset(x: 34, y: 22)
+
+                    Circle()
+                        .fill(Color.white)
+                        .frame(width: 22, height: 22)
+                }
+                .rotationEffect(.degrees(spinnerRotation))
+                Spacer()
+            }
+
+            Button("Spin") {
+                withAnimation(.interpolatingSpring(stiffness: 38, damping: 7)) {
+                    spinnerRotation += Double.random(in: 540 ... 1440)
+                }
+            }
+            .buttonStyle(.bordered)
+            .tint(.white)
         }
         .padding(20)
         .frame(maxWidth: .infinity, alignment: .leading)
